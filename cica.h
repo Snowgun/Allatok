@@ -3,13 +3,20 @@
 
 #include <iostream>
 #include <fstream>
+
+#include <allat.h>
+#include <eger.h>
+
 using namespace std;
+
+
 class Cica : public Allat<Eger>{
 private:
         int purrness;
 public:
 
    Cica(int lolm8, string n);
+   void setName(string n);
     void meow();
     int getPurrness();
 

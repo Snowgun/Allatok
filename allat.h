@@ -10,13 +10,15 @@ class Allat
 private:
     int hunger;
     string name;
+
 public:
-    void setName(string n);
 
-    void serialize(string filename);
+    void setName(string n) { name = n; }
 
-    void setHungry(int sup);
-    int gethunger();
+    //void serialize(string filename);
+
+    void setHungry(int sup) { hunger = sup; }
+    int gethunger() { return hunger; }
     void eszik(C zsakmany);
 };
 
