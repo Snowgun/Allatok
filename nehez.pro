@@ -6,9 +6,11 @@ CONFIG -= qt
 SOURCES += main.cpp \
     allat.cpp \
     cica.cpp \
-    eger.cpp
+    eger.cpp \
+    sajt.cpp
 
 HEADERS += \
     allat.h \
     cica.h \
-    eger.h
+    eger.h \
+    sajt.h
