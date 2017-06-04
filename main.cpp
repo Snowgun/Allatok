@@ -1,5 +1,6 @@
 #include <iostream>
 #include <array>
+#include <utility>
 #include <random>
 #include <stdlib.h>
 #include <chrono>
@@ -7,22 +8,24 @@
 #include <allat.h>
 #include <eger.h>
 #include <cica.h>
-#include<string>
+#include <string>
+#include <sajt.h>
+#include<vector>
 
 using namespace std;
 
-class sajt{
-public:
-    pair<int,int> szia;
-    bool z=false;
-    ~sajt(){
-    }
-};
-    array<array<string,10>,10> sorszam;
+
+random_device rd;
+mt19937 mt(rd());
+uniform_int_distribution<> dis(0,3);
+
+
+random_device sajtdevice;
+mt19937 sajtmt(sajtdevice());
+uniform_int_distribution<> sajtdis(0,19);
+
+    array<array<string,20>,20> sorszam;
     pair<int,int> alszok(pair<int,int> coord){
-        random_device rd;
-        mt19937 mt(rd());
-        uniform_int_distribution<> dis(0,3);
         int ujirany = dis(mt);
         if(ujirany==0){
             coord.first--;
@@ -38,89 +41,73 @@ public:
         }
 
         if(coord.first<0){
-            coord.first=9;
+            coord.first=19;
         }
-        else if(coord.first>9){
+        else if(coord.first>19){
             coord.first=0;
         }
         if(coord.second<0){
-            coord.second=9;
+            coord.second=19;
         }
-        else if(coord.second>9){
+        else if(coord.second>19){
             coord.second=0;
         }
         return coord;
-    };
+    }
 
-int main()
-{
+int main(){
+    std::vector<sajt> sajthalmaz;
+    int cheesenumba,micenumba;
+    cout << "number of cheese slices:\n";
+    cin >> cheesenumba;
+    cout << endl << "number of mice:\n";
+    cin >> micenumba;
+    system("cls");
 
-   /* Cica c(2, "Tom");
-    Eger e;
+    for (unsigned i = 0; i < cheesenumba; ++i){
+        sajthalmaz.push_back(sajt (1, pair<int, int>(sajtdis(sajtmt),sajtdis(sajtmt))));
+    }
 
-    c.setHungry(5);
-    e.setHungry(6);
-    std::cout << c.gethunger() << " " << e.gethunger() << endl;*/
+    std::vector<Eger> egerhalmaz;
+    for (unsigned i = 0; i < micenumba; ++i){
+        egerhalmaz.push_back(Eger ( pair<int, int>(sajtdis(sajtmt),sajtdis(sajtmt))));
+    }
 
-    //sajt nejacca;
-    //nejacca.szia.first=2;
-    //nejacca.szia.second=3;
-    sorszam;
-    //sorszam[0][5][8]=1;
-    /*random_device rd;
-    mt19937 mt(rd());
-    uniform_int_distribution<> dis(0,3);
-    pair<int,int> coord(8,8);*/
-    //pair<int,int> boord(1,1);
-    pair<int,int> neo;
-    neo.first=1;
-    neo.second=2;
-    while(true){
-        neo=alszok(neo);
-        sorszam[neo.first][neo.second]="s";
-        //sorszam[nejacca.szia.first][nejacca.szia.second]="s";
-        /*int ujirany = dis(mt);
-        if(ujirany==0){
-            coord.first--;
-        }
-        else if(ujirany==1){
-            coord.second++;
-        }
-        else if(ujirany==2){
-            coord.first++;
-        }
-        else{
-            coord.second--;
+    while(sajthalmaz.size()!=0){
+
+
+        for(size_t i=0;i<egerhalmaz.size();i++){
+            egerhalmaz[i].coord=alszok(egerhalmaz[i].coord);
         }
 
-        if(coord.first<0){
-            coord.first=9;
+
+        for(size_t i=0;i<egerhalmaz.size();i++){
+            sorszam[egerhalmaz[i].coord.first][egerhalmaz[i].coord.second]="M";
         }
-        else if(coord.first>9){
-            coord.first=0;
+
+
+        for(size_t sajtos=0;sajtos<sajthalmaz.size();sajtos++){
+            for(size_t egeres=0;egeres<egerhalmaz.size();egeres++){
+                if(egerhalmaz[egeres].coord.first==sajthalmaz[sajtos].coord.first && egerhalmaz[egeres].coord.second==sajthalmaz[sajtos].coord.second){
+                    sajthalmaz.erase(sajthalmaz.begin() + sajtos);
+                }
+                else{
+                    sorszam[sajthalmaz[sajtos].coord.first][sajthalmaz[sajtos].coord.second]="C";
+                }
+            }
+
         }
-        if(coord.second<0){
-            coord.second=9;
-        }
-        else if(coord.second>9){
-            coord.second=0;
-        }
-        sorszam[coord.first][coord.second]="s";*/
 
 
-
-    for(int x=0;x<10; x++){
-        for(int y=0;y<10;y++){
-
-
-
+    for(int x=0;x<20; x++){
+        for(int y=0;y<20;y++){
             cout << sorszam[x][y];
             sorszam[x][y]=" ";
 
         }
         cout << endl;
     }
-    this_thread::sleep_for(chrono::milliseconds(400));
+    this_thread::sleep_for(chrono::milliseconds(40));
     system("cls");
     }
     return 0;
