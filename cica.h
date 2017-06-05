@@ -15,7 +15,8 @@ private:
         int purrness;
 public:
 
-   Cica(int lolm8, string n);
+   Cica(int lolm8, string n,pair<int,int> coord);
+   pair<int,int> coord= coord;
    void setName(string n);
     void meow();
     int getPurrness();

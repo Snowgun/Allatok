@@ -56,14 +56,28 @@ uniform_int_distribution<> sajtdis(0,19);
     }
 
 int main(){
-    std::vector<sajt> sajthalmaz;
-    int cheesenumba,micenumba;
-    cout << "number of cheese slices:\n";
+    int cheesenumba,micenumba,catnumba;
+    cout << "number of cheese slices(max 20):\n";
     cin >> cheesenumba;
-    cout << endl << "number of mice:\n";
+    while(cheesenumba>20 || cheesenumba<1){
+        cout << "Please write an integer number between 1 and 20\n";
+        cin >> cheesenumba;
+    }
+    cout << endl << "number of mice(max 20):\n";
     cin >> micenumba;
+    while(micenumba>20 || micenumba<1){
+        cout << "Please write an integer number between 1 and 20\n";
+        cin >> micenumba;
+    }
+    cout << endl << "number of kittens(max 20):\n";
+    cin >> catnumba;
+    while(catnumba>20 || catnumba<1){
+        cout << "Please write an integer number between 1 and 20\n";
+        cin >> catnumba;
+    }
     system("cls");
 
+    std::vector<sajt> sajthalmaz;
     for (unsigned i = 0; i < cheesenumba; ++i){
         sajthalmaz.push_back(sajt (1, pair<int, int>(sajtdis(sajtmt),sajtdis(sajtmt))));
     }
@@ -72,17 +86,33 @@ int main(){
     for (unsigned i = 0; i < micenumba; ++i){
         egerhalmaz.push_back(Eger ( pair<int, int>(sajtdis(sajtmt),sajtdis(sajtmt))));
     }
+    std::vector<Cica> cicahalmaz;
+    for(unsigned i = 0;i < catnumba;++i){
+        cicahalmaz.push_back(Cica(360,"noname",pair<int,int>(sajtdis(sajtmt),sajtdis(sajtmt))));
+    }
 
-    while(sajthalmaz.size()!=0){
+    while(!(sajthalmaz.size()==0 || egerhalmaz.size()==0) ){
+
+        for(size_t i=0;i<cicahalmaz.size();i++){
+            cicahalmaz[i].coord=alszok(cicahalmaz[i].coord);
+        }
+        for(size_t i=0;i<cicahalmaz.size();i++){
+            sorszam[cicahalmaz[i].coord.first][cicahalmaz[i].coord.second]="K";
+        }
 
 
         for(size_t i=0;i<egerhalmaz.size();i++){
             egerhalmaz[i].coord=alszok(egerhalmaz[i].coord);
         }
-
-
-        for(size_t i=0;i<egerhalmaz.size();i++){
-            sorszam[egerhalmaz[i].coord.first][egerhalmaz[i].coord.second]="M";
+        for(size_t egeres=0;egeres<egerhalmaz.size();egeres++){
+            for(size_t cicas=0;cicas<cicahalmaz.size();cicas++){
+                if(cicahalmaz[cicas].coord.first==egerhalmaz[egeres].coord.first && cicahalmaz[cicas].coord.second==egerhalmaz[egeres].coord.second){
+                    egerhalmaz.erase(egerhalmaz.begin() + egeres);
+                }
+                else{
+                    sorszam[egerhalmaz[egeres].coord.first][egerhalmaz[egeres].coord.second]="M";
+                }
+            }
         }
 
 
@@ -95,7 +125,6 @@ int main(){
                     sorszam[sajthalmaz[sajtos].coord.first][sajthalmaz[sajtos].coord.second]="C";
                 }
             }
-
         }
 
 
@@ -109,6 +138,12 @@ int main(){
     }
     this_thread::sleep_for(chrono::milliseconds(40));
     system("cls");
+    }
+    if(egerhalmaz.size()==0){
+        cout <<"The kittens win.\n";
+    }
+    else{
+        cout <<"The mice win.\n";
     }
     return 0;
 }
